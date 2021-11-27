@@ -17,7 +17,7 @@ const BOT = {
 class App extends Component {
 
   state = {
-    messages: [{ _id: 2, text: 'Soy el Sr. Bot', createdAt: new Date(), user: BOT }, { _id: 1, text: 'Hola', createdAt: new Date(), user: BOT }],
+    messages: [{ _id: 1, text: 'Hola', createdAt: new Date(), user: BOT }, { _id: 2, text: 'Soy el Sr. Bot y seré tu guía en esta página web.', createdAt: new Date(), user: BOT }],
     id: 1,
     name: ''
   }
@@ -43,7 +43,7 @@ class App extends Component {
     if (text == 'viajar') {
       msg = {
         _id: this.state.messages.length + 1,
-        text: 'Te gustaría conocer la perla del sur?',
+        text: 'Encarnación, conocido como la perla del sur.\n Es una excelente opción para el verano, te enseño algunos lugares?',
         image: 'https://infonegocios.com.py/uploads/encartacion-404anios-plus-marzo3.jpg',
         createdAt: new Date(),
         user: BOT,
@@ -51,22 +51,22 @@ class App extends Component {
     } else if (text == 'mostrar opciones') {
       msg = {
         _id: this.state.messages.length + 1,
-        text: 'Eliga su bus',
+        text: 'Entre los más populares se encuentran...',
         createdAt: new Date(),
         user: BOT,
         isOptions: true,
         data: [
           {
-            title: 'El Tigre',
-            image: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQcbtVRAeDYiTytsgTsbBRMlOgW1geB5p6fbD8TYhBp_Sk-aor2',
+            title: 'Playa San José',
+            image: 'https://www.venus.com.py/wp-content/uploads/2020/11/playa-san-jose-simulacro.jpeg',
           },
           {
-            title: 'Beato',
-            image: 'https://www.disfrutandoparaguay.com/data/article/images/95/beato.jpg',
+            title: 'Santuario de la virgen de Itacua',
+            image: 'https://fastly.4sqi.net/img/general/600x600/28865169_OxI7CCqNp2Kb75JSkaQAXQpzs-4a47vf2K0Nzj-Ry-g.jpg',
           },
           {
-            title: 'NSA',
-            image: 'https://www.ticketonline.com.ar/assets/img/empresas-pages/nuestra-senora-de-la-asuncion/nuestra-senora-de-la-asuncion-1.jpg',
+            title: 'Plaza de Armas',
+            image: 'https://media-cdn.tripadvisor.com/media/photo-s/06/83/d6/b6/plaza-de-armas.jpg',
           },
         ],
       };
@@ -85,7 +85,29 @@ class App extends Component {
           ],
         },
       };*/
-    } else {
+    }  /*else if (text == 'restaurant') {
+      msg = {
+        _id: this.state.messages.length + 1,
+        text: 'Te interesa comer algo?',
+        createdAt: new Date(),
+        user: BOT,
+        isOptions: true,
+        data: [
+          {
+            title: 'Playa San José',
+            image: 'https://www.venus.com.py/wp-content/uploads/2020/11/playa-san-jose-simulacro.jpeg',
+          },
+          {
+            title: 'Santuario de la virgen de Itacua',
+            image: 'https://fastly.4sqi.net/img/general/600x600/28865169_OxI7CCqNp2Kb75JSkaQAXQpzs-4a47vf2K0Nzj-Ry-g.jpg',
+          },
+          {
+            title: 'Plaza de Armas',
+            image: 'https://media-cdn.tripadvisor.com/media/photo-s/06/83/d6/b6/plaza-de-armas.jpg',
+          },
+        ],
+      };
+    } */else {
       msg = {
         _id: this.state.messages.length + 1,
         text,
@@ -144,7 +166,7 @@ class App extends Component {
               <Card.Divider />
               <Card.Title>{item.title}</Card.Title>
               <Button
-                title="Escoger"
+                title="Más información."
                 style={{ height: 35 }}
                 onPress={() => this.sendBotResponse
                   (item.title)}
