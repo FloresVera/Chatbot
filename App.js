@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import React, { Component, useCallback } from 'react';
+import { StyleSheet, Text, View, ScrollView, SafeAreaView, Linking, Alert } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
 import { Dialogflow_V2 } from 'react-native-dialogflow';
@@ -14,10 +14,24 @@ const BOT = {
   name: 'Sr. Bot',
   avatar: botAvatar
 }
+
+const OpenURLButton = ({ url, children }) => {
+  const handlePress = useCallback(async () => {
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  }, [url]);
+
+  return <Button title={children} onPress={handlePress} />;
+};
 class App extends Component {
 
   state = {
-    messages: [{ _id: 1, text: 'Hola', createdAt: new Date(), user: BOT }, { _id: 2, text: 'Soy el Sr. Bot y seré tu guía en esta página web.', createdAt: new Date(), user: BOT }],
+    messages: [{ _id: 2, text: 'Soy el Sr. Bot y seré tu guía en esta página web.', createdAt: new Date(), user: BOT }, { _id: 1, text: 'Hola', createdAt: new Date(), user: BOT }],
     id: 1,
     name: ''
   }
@@ -43,7 +57,7 @@ class App extends Component {
     if (text == 'viajar') {
       msg = {
         _id: this.state.messages.length + 1,
-        text: 'Encarnación, conocido como la perla del sur.\n Es una excelente opción para el verano, te enseño algunos lugares?',
+        text: 'Encarnación, conocido como la perla del sur.\nEs una excelente opción para el verano, te enseño algunos lugares?',
         image: 'https://infonegocios.com.py/uploads/encartacion-404anios-plus-marzo3.jpg',
         createdAt: new Date(),
         user: BOT,
@@ -59,14 +73,17 @@ class App extends Component {
           {
             title: 'Playa San José',
             image: 'https://www.venus.com.py/wp-content/uploads/2020/11/playa-san-jose-simulacro.jpeg',
+            url: 'https://g.co/kgs/uWC5zy',
           },
           {
             title: 'Santuario de la virgen de Itacua',
             image: 'https://fastly.4sqi.net/img/general/600x600/28865169_OxI7CCqNp2Kb75JSkaQAXQpzs-4a47vf2K0Nzj-Ry-g.jpg',
+            url: 'https://g.co/kgs/T73e4M',
           },
           {
             title: 'Plaza de Armas',
             image: 'https://media-cdn.tripadvisor.com/media/photo-s/06/83/d6/b6/plaza-de-armas.jpg',
+            url: 'https://g.co/kgs/grqb9c',
           },
         ],
       };
@@ -85,29 +102,32 @@ class App extends Component {
           ],
         },
       };*/
-    }  /*else if (text == 'restaurant') {
+    } else if (text == 'restaurant') {
       msg = {
         _id: this.state.messages.length + 1,
-        text: 'Te interesa comer algo?',
+        text: 'Hay varias opciones para diferentes gustos.',
         createdAt: new Date(),
         user: BOT,
         isOptions: true,
         data: [
           {
-            title: 'Playa San José',
-            image: 'https://www.venus.com.py/wp-content/uploads/2020/11/playa-san-jose-simulacro.jpeg',
+            title: 'A la carta',
+            image: 'https://as01.epimg.net/epik/imagenes/2019/04/22/portada/1555949275_957223_1555949556_noticia_normal.jpg',
+            url: 'http://c1951292.ferozo.com/leandro',
           },
           {
-            title: 'Santuario de la virgen de Itacua',
-            image: 'https://fastly.4sqi.net/img/general/600x600/28865169_OxI7CCqNp2Kb75JSkaQAXQpzs-4a47vf2K0Nzj-Ry-g.jpg',
+            title: 'Bufet',
+            image: 'https://www.eventindustryshow.com/img/blog/noticia3.jpg',
+            url: 'http://c1951292.ferozo.com/leandro',
           },
           {
-            title: 'Plaza de Armas',
-            image: 'https://media-cdn.tripadvisor.com/media/photo-s/06/83/d6/b6/plaza-de-armas.jpg',
+            title: 'Comida chatarra',
+            image: 'https://img.vixdata.io/pd/jpg-large/es/sites/default/files/btg/curiosidades.batanga.com/files/Por-que-nuestro-cerebro-ama-la-comida-chatarra-00.jpg',
+            url: 'http://c1951292.ferozo.com/leandro',
           },
         ],
       };
-    } */else {
+    } else {
       msg = {
         _id: this.state.messages.length + 1,
         text,
@@ -162,15 +182,10 @@ class App extends Component {
                 borderRadius: 15, paddingBottom: 7, overflow: 'hidden',
               }}
               key={item.title}>
-              <Card.Image style={{ width: 220, height: 110 }} resizeMode="cover" source={{ uri: item.image }}></Card.Image>
+              <Card.Image style={{ width: 300, height: 110 }} resizeMode="cover" source={{ uri: item.image }}></Card.Image>
               <Card.Divider />
               <Card.Title>{item.title}</Card.Title>
-              <Button
-                title="Más información."
-                style={{ height: 35 }}
-                onPress={() => this.sendBotResponse
-                  (item.title)}
-              />
+              <OpenURLButton url={item.url}>Más información</OpenURLButton>
             </Card>
           ))}
         </ScrollView>
@@ -191,6 +206,7 @@ class App extends Component {
 
   render() {
     return (
+      
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <GiftedChat
           messages={this.state.messages}
